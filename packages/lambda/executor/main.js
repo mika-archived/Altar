@@ -206,7 +206,7 @@ const handler = async (event, context) => {
     await runPerlExecutor(ecs, revision);
     await destroyExecutorTaskDefinitionAsync(ecs, revision);
 
-    return { status: "success", payload: JSON.stringify(json) };
+    return { status: "success", state: json };
   } catch (err) {
     console.error(err);
     return { status: "fail", reason: err };
