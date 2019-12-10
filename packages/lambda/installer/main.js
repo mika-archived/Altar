@@ -127,13 +127,13 @@ const runPerlInstaller = async (ecs, json) => {
 };
 
 /**
- * @param {import("aws-lambda").APIGatewayEvent} event
+ * @param {any} event
  * @param {import("aws-lambda").Context} _context
  */
 
 const handler = async (event, _context) => {
   /** @type {Payload} */
-  const json = JSON.parse(event.body);
+  const json = event.body;
   json.id = uuid(); // new generated unique id
 
   const ecs = new aws.ECS();
