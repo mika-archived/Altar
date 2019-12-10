@@ -89,7 +89,7 @@ const createExecutorTaskDefinitionAsync = async (ecs, json) => {
         cpu: 128,
         memory: 128,
         essential: true,
-        command: ["perl", "main.pl"],
+        command: ["timeout", "60", "perl", "main.pl"],
         environment: [{ name: "PERL5LIB", value: "./local/lib/perl5:./lib" }],
         workingDirectory: `/usr/local/PROJECT/workspace`,
         mountPoints: [
