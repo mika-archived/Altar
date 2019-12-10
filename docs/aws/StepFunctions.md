@@ -46,7 +46,15 @@ Altar Step Functions
       "Next": "ALTAR_CLEANUP"
     },
     "ALTAR_CLEANUP": {
-      "Type": "Succeed"
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "ARN_OF_LAMBDA_FUNCTION_ALTAR_CLEANER:$LATEST",
+        "Payload": {
+          "state.$": "$.Payload.state"
+        }
+      },
+      "End": true
     }
   }
 }
