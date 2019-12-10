@@ -1,4 +1,4 @@
-FROM perl:5:30:1
+FROM perl:5.30.1
 
 RUN true \
   && cpanm --notest File::Path \
