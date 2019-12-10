@@ -10,11 +10,12 @@ type ValueGetter = () => string;
 
 const Editor: React.FC<Props> = ({ className, onEditorMounted }) => {
   const initialValue = `
-use features qw/say state/;
+use feature qw/say state/;
 use strict;
 use utf8;
 use warnings;
-  
+
+package Example::PerlSnippet;
 use Data::Validator;
   
 sub say_hello {
@@ -27,7 +28,9 @@ sub say_hello {
     say "Hello, $str";
 }
   
-say_hello("Altar");
+package main;
+
+Example::PerlSnippet->say_hello(str => "Altar");
   `.trim();
 
   const onEditorDidMount = (valueGetter: ValueGetter, _instance: any): void => {
