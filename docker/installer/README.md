@@ -44,7 +44,7 @@ example request JSON is...
   "files": [
     {
       "name": "main.pl",
-      "content": "use features qw/say state/;\nuse strict;\nuse utf8;\nuse warnings;\n  \nuse Data::Validator;\n  \nsub say_hello {\n    state $v; $v //= Data::Validator->new(\n        str => 'Str',\n    )->with(qw/Method/);\n    my ($class, $args) = $v->validate(@_);\n    my ($str, ) = @$args{qw/str/};\n\n    say \"Hello, $str\";\n}\n  \nsay_hello(\"Altar\");"
+      "content": "use feature qw/say state/;\nuse strict;\nuse utf8;\nuse warnings;\n\npackage Example::PerlSnippet;\nuse Data::Validator;\n  \nsub say_hello {\n    state $v; $v //= Data::Validator->new(\n        str => 'Str',\n    )->with(qw/Method/);\n    my ($class, $args) = $v->validate(@_);\n    my ($str, ) = @$args{qw/str/};\n\n    say \"Hello, $str\";\n}\n  \npackage main;\n\nExample::PerlSnippet->say_hello(str => \"Altar\");"
     }
   ],
   "dependencies": [
