@@ -9,6 +9,10 @@ const Container = styled(FlexboxContainer)`
   height: 100%;
 `;
 
+const Content = styled.div`
+  margin: 40px 0;
+`;
+
 type Props = {
   children?: any;
 };
@@ -17,7 +21,9 @@ const Wrapper: React.FC<Props> = ({ children }) => {
   return (
     <Container direction="vertical">
       <Header />
-      <FlexItem grow>{children}</FlexItem>
+      <FlexItem grow>
+        <Content>{children}</Content>
+      </FlexItem>
       <Footer />
     </Container>
   );
