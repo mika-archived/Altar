@@ -3,8 +3,8 @@ use warnings;
 use feature qw/say/;
 use utf8;
 
-use Data::Validator;
 use Encode qw/encode_utf8/;
+use File::Path qw/mkpath/;
 use JSON qw/decode_json/;
 
 sub parse_altar_project {
@@ -29,6 +29,7 @@ sub get_safe_path {
 }
 
 sub create_cpanfile {
+  my $root         = shift;
   my $dependencies = shift;
   my $str = '';
 
@@ -43,19 +44,20 @@ sub create_cpanfile {
     }
   }
 
-  open(HANDLE, '>', 'cpanfile') or die 'unknown error';
+  open(HANDLE, '>', "$root/cpanfile") or die 'unknown error';
   print HANDLE $str;
   close(HANDLE);
 }
 
 sub create_project_file {
+  my $root  = shift;
   my $files = shift;
 
   for my $file (@{$files}) {
     my $name    = get_safe_path($file->{name});
     my $content = $file->{content};
 
-    open(HANDLE, '>', $name) or die 'unknown error';
+    open(HANDLE, '>', "$root/$name") or die 'unknown error';
     print HANDLE $content;
     close(HANDLE);
   }
@@ -63,9 +65,12 @@ sub create_project_file {
 
 sub main {
   my $json = parse_altar_project();
+  my $root = './' . $json->{id};
 
-  create_cpanfile($json->{dependencies});
-  create_project_file($json->{files});
+  mkpath($root) or die "unknown error";
+
+  create_cpanfile($root, $json->{dependencies});
+  create_project_file($root, $json->{files});
 }
 
 main;
