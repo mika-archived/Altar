@@ -44,9 +44,9 @@ Altar API Gateway
 }
 ```
 
-### GET `/execution/{buildId}`
+## GET `/execution/{buildId}`
 
-#### Integration Request
+### Integration Request
 
 | Item                 | Value                                      |
 | -------------------- | ------------------------------------------ |
