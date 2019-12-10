@@ -196,7 +196,7 @@ const runPerlExecutor = async (ecs, revision) => {
  */
 const handler = async (event, context) => {
   /** @type {Payload} */
-  const json = JSON.parse(event.payload);
+  const json = event.state;
   if (!json.id || !json.executor) return context.fail("invalid request body");
 
   const ecs = new aws.ECS();

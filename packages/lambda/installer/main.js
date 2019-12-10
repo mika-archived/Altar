@@ -141,7 +141,7 @@ const handler = async (event, _context) => {
   try {
     await runPerlInstaller(ecs, json);
 
-    return { status: "success", payload: JSON.stringify(json) };
+    return { status: "success", state: json };
   } catch (err) {
     console.error(err);
     return { status: "fail", reason: err };
