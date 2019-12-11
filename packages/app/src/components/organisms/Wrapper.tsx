@@ -7,6 +7,7 @@ import Header from "../organisms/Header";
 
 const Container = styled(FlexboxContainer)`
   height: 100%;
+  min-height: 100vh;
 `;
 
 const Content = styled.div`
