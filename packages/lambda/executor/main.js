@@ -148,7 +148,7 @@ const destroyExecutorTaskDefinitionAsync = async (ecs, revision) => {
 /**
  * @param {import("aws-sdk").ECS} ecs
  * @param {number} revision
- * @returns {Promise}
+ * @returns {Promise<string>}
  */
 const runPerlExecutor = async (ecs, revision) => {
   console.log(revision);
@@ -184,6 +184,8 @@ const runPerlExecutor = async (ecs, revision) => {
         );
 
       status = describeResponse.tasks[0].desiredStatus;
+
+      return task.taskArn.split("/")[1];
     } while (status !== "STOPPED");
   } catch (err) {
     return Promise.reject(err);
@@ -197,16 +199,16 @@ const runPerlExecutor = async (ecs, revision) => {
 const handler = async (event, context) => {
   /** @type {Payload} */
   const json = event.state;
-  if (!json.id || !json.executor) return context.fail("invalid request body");
+  if (!json.id || !json.executor) return { status: "fail", reason: "invalid request body" };
 
   const ecs = new aws.ECS();
 
   try {
     const revision = await createExecutorTaskDefinitionAsync(ecs, json);
-    await runPerlExecutor(ecs, revision);
+    const taskArn = await runPerlExecutor(ecs, revision);
     await destroyExecutorTaskDefinitionAsync(ecs, revision);
 
-    return { status: "success", state: json };
+    return { status: "success", state: { ...json, taskArn } };
   } catch (err) {
     console.error(err);
     return { status: "fail", reason: err };
