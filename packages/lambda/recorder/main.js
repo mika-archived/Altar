@@ -142,7 +142,7 @@ const validate = json => {
 const handler = async (event, _) => {
   /** @type {Payload} */
   const json = event.state;
-  if (!validate(json)) return { status: "fail", reason: "invalid request body" };
+  if (!validate(json)) return { status: "fail", reason: "invalid request body", state: json };
 
   try {
     const logs = await getLogsAsync(json.taskArn);
@@ -151,7 +151,7 @@ const handler = async (event, _) => {
     return { status: "success", state: { ...json, logs } };
   } catch (err) {
     console.error(err);
-    return { status: "fail", reason: err };
+    return { status: "fail", reason: err, state: json };
   }
 };
 

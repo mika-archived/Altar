@@ -161,7 +161,7 @@ const validate = json => {
 const handler = async (event, _context) => {
   /** @type {Payload} */
   const json = event.body;
-  if (!validate(json)) return { status: "fail", reason: "invalid request body" };
+  if (!validate(json)) return { status: "fail", reason: "invalid request body", state: json };
 
   json.id = uuid(); // new generated unique id
 
@@ -173,7 +173,7 @@ const handler = async (event, _context) => {
     return { status: "success", state: json };
   } catch (err) {
     console.error(err);
-    return { status: "fail", reason: err };
+    return { status: "fail", reason: err, state: json };
   }
 };
 

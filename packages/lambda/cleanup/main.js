@@ -104,7 +104,7 @@ const runPerlCleaner = async (ecs, json) => {
 const handler = async (event, _context) => {
   /** @type {Payload} */
   const json = event.state;
-  if (!json.id) return { status: "fail", reason: "no id specified" };
+  if (!json.id) return { status: "fail", reason: "no id specified", state: json };
 
   const ecs = new aws.ECS();
 
@@ -114,7 +114,7 @@ const handler = async (event, _context) => {
     return { status: "success", state: json };
   } catch (err) {
     console.error(err);
-    return { status: "fail", reason: err };
+    return { status: "fail", reason: err, state: json };
   }
 };
 

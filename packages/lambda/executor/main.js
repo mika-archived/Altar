@@ -199,7 +199,7 @@ const runPerlExecutor = async (ecs, revision) => {
 const handler = async (event, context) => {
   /** @type {Payload} */
   const json = event.state;
-  if (!json.id || !json.executor) return { status: "fail", reason: "invalid request body" };
+  if (!json.id || !json.executor) return { status: "fail", reason: "invalid request body", state: json };
 
   const ecs = new aws.ECS();
 
@@ -211,7 +211,7 @@ const handler = async (event, context) => {
     return { status: "success", state: { ...json, taskArn } };
   } catch (err) {
     console.error(err);
-    return { status: "fail", reason: err };
+    return { status: "fail", reason: err, state: json };
   }
 };
 
