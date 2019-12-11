@@ -7,6 +7,8 @@ Altar DynamoDB
 | Key Name             | Type         |
 | -------------------- | ------------ |
 | Partition Key (`id`) | `String`     |
+| `dependencyNames`    | `String Set` |
+| `dependencyVersions` | `String Set` |
 | `executor`           | `String`     |
 | `fileContents`       | `String Set` |
 | `fileTitles`         | `String Set` |
