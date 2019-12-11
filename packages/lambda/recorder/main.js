@@ -141,7 +141,7 @@ const validate = json => {
  */
 const handler = async (event, _) => {
   /** @type {Payload} */
-  const json = event.body;
+  const json = event.state;
   if (!validate(json)) return { status: "fail", reason: "invalid request body" };
 
   try {
