@@ -18,7 +18,10 @@ const About: React.FC = () => {
             <li>use the CPAN modules without creating an environment yourself </li>
             <li>share the code and its result </li>
           </ul>
-          <p>Each runs in an isolated environment and not affected by the previous run.</p>
+          <p>
+            Each runs in an isolated environment and not affected by the previous run. And also, cannot connect to the
+            Internet.
+          </p>
         </Section>
         <Section title="Limitations">
           <ul>
@@ -33,6 +36,11 @@ const About: React.FC = () => {
               installed at least once through the service are cached for faster use.
             </li>
             <li>Perl code can run for up to a minute.</li>
+            <li>All Perl code can be up to 100 KB long.</li>
+            <li>Only the last 50 lines of stdout and stderr are recorded.</li>
+            <li>
+              stdout/stderr larger than 100 KB are no recorded. <b>All of them will be discarded.</b>
+            </li>
             <li>It does not allow interactive code or animation output.</li>
             <li>For financial reasons, we don't know when the data will disappear.</li>
             <li>For the same reason, we don't know when the service will stop.</li>
