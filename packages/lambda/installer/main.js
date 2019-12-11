@@ -1,6 +1,8 @@
 // @ts-check
 const aws = require("aws-sdk");
 
+const EXECUTORS = ["5.30.1"];
+
 /**
  * @typedef {Object} File
  * @property {string} name
@@ -12,6 +14,7 @@ const aws = require("aws-sdk");
  * @property {string} id
  * @property {string} executor
  * @property {File[]} files
+ * @property {string} title
  */
 
 /**
@@ -30,6 +33,14 @@ const uuid = () => {
   }
 
   return uuid;
+};
+
+/**
+ * @param {string} str
+ * @returns {number}
+ */
+const bytes = str => {
+  return escape(encodeURIComponent(str)).length;
 };
 
 /**
@@ -127,13 +138,31 @@ const runPerlInstaller = async (ecs, json) => {
 };
 
 /**
+ * @param {Payload} json
+ * @returns {boolean}
+ */
+const validate = json => {
+  // executor is null, empty or invalid
+  if (!json.executor || json.executor.length === 0 || !EXECUTORS.includes(json.executor)) return false;
+
+  // files is null, empty
+  if (!json.files || json.files.length === 0) return false;
+
+  // or too larger (max 100KB)
+  if (bytes(json.files.map(w => w.content).join("")) / 1024 >= 100) return false;
+
+  return true;
+};
+
+/**
  * @param {any} event
  * @param {import("aws-lambda").Context} _context
  */
-
 const handler = async (event, _context) => {
   /** @type {Payload} */
   const json = event.body;
+  if (!validate(json)) return { status: "fail", reason: "invalid request body" };
+
   json.id = uuid(); // new generated unique id
 
   const ecs = new aws.ECS();
