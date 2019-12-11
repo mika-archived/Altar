@@ -3,7 +3,7 @@ import styled from "styled-components";
 const Input = styled.input`
   width: calc(100% - 20px);
   padding: 12px 8px;
-  font-family: Menlo, Monaco, "Courier New", monospace;
+  font-family: Consolas, Menlo, Monaco, "Courier New", monospace;
   font-size: 24px;
   color: white;
   background-color: #252526;

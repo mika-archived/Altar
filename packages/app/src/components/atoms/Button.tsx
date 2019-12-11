@@ -13,7 +13,7 @@ const Button = styled.button`
 
 const PrimaryButton = styled(Button)`
   color: #fff;
-  background-color: #0e639c;
+  background-color: #007acc;
   border-color: #17b;
 `;
 

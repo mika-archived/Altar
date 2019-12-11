@@ -11,7 +11,7 @@ html, body {
 }
 
 #app {
-  height: 100vh;
+  height: 100%;
   min-height: 100vh;
   line-height: 1.5;
   color: #fff;
