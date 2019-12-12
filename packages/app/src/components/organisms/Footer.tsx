@@ -21,7 +21,6 @@ type Props = {};
 const Footer: React.FC<Props> = () => {
   const items = [
     { href: "/about", label: "About" },
-    { href: "/terms", label: "Terms of Service" },
     { href: "https://twitter.com/MikazukiFuyuno", label: "Twitter" }
   ];
 

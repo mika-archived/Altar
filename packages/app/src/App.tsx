@@ -13,7 +13,6 @@ const App: React.FC = () => {
         <Route path="/" component={Root} exact />
         <Route path="/permalink/:id" component={Root} />
         <Route path="/about" component={About} exact />
-        <Route path="/terms" component={Root} exact />
       </BrowserRouter>
     </>
   );
