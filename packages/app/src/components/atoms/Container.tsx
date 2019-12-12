@@ -4,6 +4,7 @@ const Container = styled.div`
   width: 90%;
   margin: 0 auto;
 
+  /*
   @media (min-width: 576px) {
     width: 540px;
   }
@@ -19,6 +20,7 @@ const Container = styled.div`
   @media (min-width: 1200px) {
     width: 1140px;
   }
+  */
 `;
 
 export default Container;
