@@ -3,6 +3,9 @@ import ReactDOM from "react-dom";
 import { createGlobalStyle } from "styled-components";
 
 import App from "./App";
+import Loading from "./components/containers/Loading";
+
+import "./i18n";
 
 const GlobalStyle = createGlobalStyle`
 html, body {
@@ -22,7 +25,9 @@ html, body {
 ReactDOM.render(
   <React.StrictMode>
     <GlobalStyle />
-    <App />
+    <React.Suspense fallback={<Loading />}>
+      <App />
+    </React.Suspense>
   </React.StrictMode>,
   document.querySelector("#app")
 );

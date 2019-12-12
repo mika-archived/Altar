@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation, Trans } from "react-i18next";
 
 import Container from "../atoms/Container";
 import Link from "../molecules/Link";
@@ -6,44 +7,42 @@ import Section from "../molecules/Section";
 import Wrapper from "../organisms/Wrapper";
 
 const About: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <Wrapper>
       <Container>
-        <Section title="About Altar">
-          <p>Altar is a Perl 5 online compiler with the CPAN modules available.</p>
-          <p>On this site you can</p>
+        <Section title={t("about.section1.title")}>
+          <p>{t("about.section1.description")}</p>
+          <p>{t("about.section1.on_this_site.title")}</p>
           <ul>
-            <li>write Perl 5 code using Visual Studio Code (Monaco Editor) </li>
-            <li>run the code and get the results </li>
-            <li>use the CPAN modules without creating an environment yourself </li>
-            <li>share the code and its result </li>
+            <li>{t("about.section1.on_this_site.1")}</li>
+            <li>{t("about.section1.on_this_site.2")}</li>
+            <li>{t("about.section1.on_this_site.3")}</li>
+            <li>{t("about.section1.on_this_site.4")}</li>
           </ul>
-          <p>
-            Each runs in an isolated environment and not affected by the previous run. And also, cannot connect to the
-            Internet.
-          </p>
+          <p>{t("about.section1.attention")}</p>
         </Section>
-        <Section title="Limitations">
+        <Section title={t("about.section2.title")}>
           <ul>
             <li>
-              Our site is optimized for desktop, if you want to use optimized-version for mobile, please send
-              Pull-Request to&nbsp;
-              <Link href="https://github.com/mika-f/Altar">mika-f/Altar</Link>.
+              <Trans i18nKey="about.section2.limitations.1">
+                <Link href="https://github.com/mika-f/Altar"></Link>
+              </Trans>
             </li>
-            <li>You cannot create a private code. All codes are accessible from the Internet.</li>
+            <li>{t("about.section2.limitations.2")}</li>
+            <li>{t("about.section2.limitations.3")}</li>
+            <li>{t("about.section2.limitations.4")}</li>
+            <li>{t("about.section2.limitations.5")}</li>
+            <li>{t("about.section2.limitations.6")}</li>
             <li>
-              Installation process of dependent libraries is allowed up to 5 minutes. However, libraries that have been
-              installed at least once through the service are cached for faster use.
+              <Trans i18nKey="about.section2.limitations.7">
+                <b></b>
+              </Trans>
             </li>
-            <li>Perl code can run for up to a minute.</li>
-            <li>All Perl code can be up to 100 KB long.</li>
-            <li>Only the last 50 lines of stdout and stderr are recorded.</li>
-            <li>
-              stdout/stderr larger than 100 KB are no recorded. <b>All of them will be discarded.</b>
-            </li>
-            <li>It does not allow interactive code or animation output.</li>
-            <li>For financial reasons, we don't know when the data will disappear.</li>
-            <li>For the same reason, we don't know when the service will stop.</li>
+            <li>{t("about.section2.limitations.8")}</li>
+            <li>{t("about.section2.limitations.9")}</li>
+            <li>{t("about.section2.limitations.10")}</li>
           </ul>
         </Section>
       </Container>

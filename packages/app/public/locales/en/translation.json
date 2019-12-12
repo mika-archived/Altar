@@ -1,0 +1,31 @@
+{
+  "about": {
+    "section1": {
+      "title": "About Altar",
+      "description": "Altar is a Perl 5 online compiler with the CPAN modules available.",
+      "on_this_site": {
+        "title": "On this site you can:",
+        "1": "write Perl 5 code using Visual Studio Code (Monaco Editor)",
+        "2": "run the code and get the results",
+        "3": "use the CPAN modules without creating an environment yourself",
+        "4": "share the code and its result"
+      },
+      "attention": "Each runs in an isolated environment and not affected by the previous run. And also, cannot connect to the Internet."
+    },
+    "section2": {
+      "title": "Limitations",
+      "limitations": {
+        "1": "Our site is optimized for desktop, if you want to use optimized-version for mobile, please send Pull-Request to <0>mika-f/Altar</0>.",
+        "2": "You cannot create a private code. All codes are accessible from the Internet.",
+        "3": "Installation process of dependent modules is allowed up to 5 minutes. However, modules that have been installed at least once through the service are cached for faster use.",
+        "4": "Perl code can run for up to a minute.",
+        "5": "All Perl code can be up to 100 KB long.",
+        "6": "Only the last 50 lines of stdout and stderr are recorded.",
+        "7": "stdout/stderr larger than 100 KB are no recorded. <0>All of them will be discarded.</0>",
+        "8": "It does not allow interactive code or animation output.",
+        "9": "For financial reasons, we don't know when the data will disappear.",
+        "10": "For the same reason, we don't know when the service will stop."
+      }
+    }
+  }
+}
