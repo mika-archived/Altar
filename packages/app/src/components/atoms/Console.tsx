@@ -6,6 +6,7 @@ const Outer = styled.pre`
   padding: 8px 16px;
   font-size: 16px;
   color: white;
+  white-space: normal;
   background-color: #252526;
   border: 1px solid #bbb;
   border-radius: 4px;
