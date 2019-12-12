@@ -2,6 +2,9 @@ import axios from "axios";
 import React, { useRef, useState, ChangeEvent } from "react";
 import styled from "styled-components";
 
+import useWindowSize from "../../hooks/useWindowSize";
+import DataValidatorTemplate from "../../templates/data-validator";
+
 import { PrimaryButton } from "../atoms/Button";
 import Console from "../atoms/Console";
 import Container from "../atoms/Container";
@@ -13,23 +16,26 @@ import Section from "../molecules/Section";
 
 type ValueGetter = () => string;
 
+const Item = styled(FlexItem)`
+  min-width: 0;
+`;
+
 const CodeEditor = styled(Editor)`
   width: 100%;
-  max-width: calc(100% - 6px); /* monaco-editor expands 1px, why?? */
-  height: 600px;
-  margin: 0 5px 0 0;
+  max-width: calc(100% - 1px); /* monaco-editor expands 1px, why??? */
+  height: 500px;
 `;
 
 const OutputConsole = styled(Console)`
   width: 100%;
-  max-width: calc(100% - 5px);
-  height: 600px;
-  margin: 0 0 0 5px;
+  height: auto;
+  min-height: 24px;
 `;
 
 const Root: React.FC = () => {
   const [title, setTitle] = useState<string>("notitle");
   const getter = useRef<ValueGetter>();
+  const { width } = useWindowSize();
 
   const onEditorMounted = (valueGetter: ValueGetter) => {
     getter.current = valueGetter;
@@ -45,23 +51,26 @@ const Root: React.FC = () => {
     const content = getter.current();
   };
 
+  const basis = width >= 756 ? { editor: "calc(100% - 250px)", deps: "250px" } : { editor: "100%", deps: "100%" };
+
   return (
     <Wrapper>
       <Container>
         <Input value={title} onChange={onTitleChanged} placeholder="notitle" />
-        <FlexboxContainer>
-          <FlexItem basis="50%">
+        <FlexboxContainer direction="reverse-horizontal" wrap="wrap">
+          <Item basis={basis.editor}>
             <Section title="Code">
-              <CodeEditor onEditorMounted={onEditorMounted} />
+              <CodeEditor value={DataValidatorTemplate.CODE} onEditorMounted={onEditorMounted} />
             </Section>
-          </FlexItem>
-          <FlexItem basis="50%">
-            <Section title="Output">
-              <OutputConsole />
-            </Section>
-            <PrimaryButton onClick={onClickBuild}>Save and Run</PrimaryButton>
-          </FlexItem>
+          </Item>
+          <Item basis={basis.deps}>
+            <Section title="Dependencies"></Section>
+          </Item>
         </FlexboxContainer>
+        <Section title="Output">
+          <OutputConsole />
+        </Section>
+        <PrimaryButton onClick={onClickBuild}>Save and Run</PrimaryButton>
       </Container>
     </Wrapper>
   );

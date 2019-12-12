@@ -3,50 +3,20 @@ import Monaco from "@monaco-editor/react";
 
 type Props = {
   className?: string;
+  value: string;
   onEditorMounted?: (getter: ValueGetter) => void;
 };
 
 type ValueGetter = () => string;
 
-const Editor: React.FC<Props> = ({ className, onEditorMounted }) => {
-  const initialValue = `
-use feature qw/say state/;
-use strict;
-use utf8;
-use warnings;
-
-package Example::PerlSnippet;
-use Data::Validator;
-  
-sub say_hello {
-    state $v; $v //= Data::Validator->new(
-        str => 'Str',
-    )->with(qw/Method/);
-    my ($class, $args) = $v->validate(@_);
-    my ($str, ) = @$args{qw/str/};
-
-    say "Hello, $str";
-}
-  
-package main;
-
-Example::PerlSnippet->say_hello(str => "Altar");
-  `.trim();
-
+const Editor: React.FC<Props> = ({ className, value, onEditorMounted }) => {
   const onEditorDidMount = (valueGetter: ValueGetter, _instance: any): void => {
     if (onEditorMounted) onEditorMounted(valueGetter);
   };
 
   return (
     <div className={className}>
-      <Monaco
-        height="100%"
-        width="100%"
-        theme="dark"
-        language="perl"
-        value={initialValue}
-        editorDidMount={onEditorDidMount}
-      />
+      <Monaco height="100%" width="100%" theme="dark" language="perl" value={value} editorDidMount={onEditorDidMount} />
     </div>
   );
 };
