@@ -96,14 +96,16 @@ const getLogsAsync = async taskArn => {
 const insertBuild = async (json, logs) => {
   const db = new aws.DynamoDB();
 
+  const dependencies = json.dependencies && json.dependencies.length > 0 ? json.dependencies : NO_DEPENDENCIES;
+
   /** @type {import("aws-sdk").DynamoDB.PutItemInput} */
   const params = {
     TableName: "Altar",
     Item: {
       id: { S: json.id },
       executor: { S: json.executor },
-      dependencyNames: { SS: (json.dependencies || NO_DEPENDENCIES).map(w => w.name) },
-      dependencyVersions: { SS: (json.dependencies || NO_DEPENDENCIES).map(w => w.version || "(unspecified)") },
+      dependencyNames: { SS: dependencies.map(w => w.name) },
+      dependencyVersions: { SS: dependencies.map(w => w.version || "(unspecified)") },
       fileContents: { SS: json.files.map(w => w.content) },
       fileTitles: { SS: json.files.map(w => w.name) },
       title: { S: json.title || "notitle" },
