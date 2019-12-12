@@ -1,10 +1,12 @@
-import axios from "axios";
 import React, { useRef, useState, ChangeEvent } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
+import useAltarBuild from "../../hooks/useAltarBuild";
 import useWindowSize from "../../hooks/useWindowSize";
 import DataValidatorTemplate from "../../templates/data-validator";
 
+import Alert from "../atoms/Alert";
 import { PrimaryButton } from "../atoms/Button";
 import Console from "../atoms/Console";
 import Container from "../atoms/Container";
@@ -33,9 +35,16 @@ const OutputConsole = styled(Console)`
 `;
 
 const Root: React.FC = () => {
-  const [title, setTitle] = useState<string>("notitle");
+  // states
   const getter = useRef<ValueGetter>();
+  const [title, setTitle] = useState<string>("notitle");
+  const [error, setError] = useState<string>("");
+  const [isBuilding, setIsBuilding] = useState<boolean>(false);
   const { width } = useWindowSize();
+
+  // utilities
+  const { startExecution, fetchExecution } = useAltarBuild();
+  const history = useHistory();
 
   const onEditorMounted = (valueGetter: ValueGetter) => {
     getter.current = valueGetter;
@@ -49,6 +58,29 @@ const Root: React.FC = () => {
     if (!getter.current) return;
 
     const content = getter.current();
+    if (content.trim() === "") {
+      setError("The code could not be blank");
+      return;
+    }
+
+    setIsBuilding(true);
+
+    const params = { dependencies: [], executor: "5.30.1", files: [{ name: "main.pl", content }], title };
+    const { buildId } = await startExecution(params);
+    if (buildId === null) {
+      setIsBuilding(false);
+      setError("Build Error: Unknown");
+      return;
+    }
+
+    const fetch = async () => {
+      const execution = await fetchExecution(buildId);
+      if (execution.status === "") return setTimeout(fetch, 1000);
+      setIsBuilding(false);
+      history.push(`/permalink/${execution.id}`);
+    };
+
+    setTimeout(fetch, 5000);
   };
 
   const basis = width >= 756 ? { editor: "calc(100% - 250px)", deps: "250px" } : { editor: "100%", deps: "100%" };
@@ -70,7 +102,16 @@ const Root: React.FC = () => {
         <Section title="Output">
           <OutputConsole />
         </Section>
-        <PrimaryButton onClick={onClickBuild}>Save and Run</PrimaryButton>
+        {error !== "" ? (
+          <Alert color="error" title="Error">
+            {error}
+          </Alert>
+        ) : (
+          <></>
+        )}
+        <PrimaryButton onClick={onClickBuild} disabled={isBuilding}>
+          Save and Run
+        </PrimaryButton>
       </Container>
     </Wrapper>
   );

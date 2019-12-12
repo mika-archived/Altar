@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 const Console = styled.div`
+  max-width: calc(100% - 2px);
   font-family: Consolas, Menlo, Monaco, "Courier New", monospace;
   font-size: 24px;
   color: white;

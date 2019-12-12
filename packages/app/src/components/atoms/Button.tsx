@@ -3,7 +3,7 @@ import styled from "styled-components";
 const Button = styled.button`
   padding: 12px;
   font-size: 18px;
-  border: 1px solid #ccc;
+  border: 0;
   border-radius: 8px;
 
   :focus {
@@ -13,8 +13,12 @@ const Button = styled.button`
 
 const PrimaryButton = styled(Button)`
   color: #fff;
-  background-color: #007acc;
-  border-color: #17b;
+  background-color: #0e639c;
+
+  :disabled {
+    color: #ccc;
+    background-color: #004a83;
+  }
 `;
 
 export { Button, PrimaryButton };
