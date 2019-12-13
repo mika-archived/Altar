@@ -26,10 +26,15 @@ export default function useAltarBuild() {
     return response.ok ? execution : {};
   };
 
+  const fetchStatus = async (buildId: string) => {
+    const status = await request.get(`/execution/${buildId}/status`);
+    return response.ok ? status : {};
+  };
+
   const fetchTask = async (id: string) => {
     const task = await request.get(`/task/${id}`);
     return response.ok ? task : {};
   };
 
-  return { startExecution, fetchExecution, fetchTask };
+  return { startExecution, fetchExecution, fetchStatus, fetchTask };
 }

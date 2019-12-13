@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "start": "parcel serve public/index.html",
-    "build": "parcel build public/index.html"
+    "build": "rm -rf ./dist && parcel build public/index.html"
   },
   "dependencies": {
     "@monaco-editor/react": "^2.3.0",

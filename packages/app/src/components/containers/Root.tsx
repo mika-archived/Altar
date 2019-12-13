@@ -64,11 +64,12 @@ const Root: React.FC = () => {
   const [dependencies, setDependencies] = useState<Dependencies>(DataValidatorTemplate.DEPENDENCIES);
   const [value, setValue] = useState("");
   const [error, setError] = useState<string>("");
+  const [logs, setLogs] = useState<{ event: string; message: string }[]>([]);
   const [isBuilding, setIsBuilding] = useState<boolean>(false);
   const { width } = useWindowSize();
 
   // utilities
-  const { startExecution, fetchExecution } = useAltarBuild();
+  const { startExecution, fetchExecution, fetchStatus } = useAltarBuild();
   const history = useHistory();
   const { t } = useTranslation();
 
@@ -121,13 +122,38 @@ const Root: React.FC = () => {
       return;
     }
 
+    const shouldLogging = (events: string[], execution: string) => {
+      return events.includes(execution) && !logs.find(w => w.event === execution);
+    };
+
     const fetch = async () => {
+      const status = await fetchStatus(buildId);
+      if (status === null) {
+        setIsBuilding(false);
+        setError("Build Error: Failed to fetch build ID from the server.");
+        return;
+      }
+
+      if (status.events.length < 28) {
+        if (shouldLogging(status.events, "ALTAR_INSTALLATION"))
+          setLogs(logs.concat({ event: "ALTAR_INSTALLATION", message: "Installing dependencies..." }));
+        if (shouldLogging(status.events, "ALTAR_CONTINUE_TO_EXECUTION"))
+          setLogs(
+            logs.concat({ event: "ALTAR_CONTINUE_TO_EXECUTION", message: "Installed dependencies successfully." })
+          );
+        if (shouldLogging(status.events, "ALTAR_EXECUTION"))
+          setLogs(logs.concat({ event: "ALTAR_EXECUTION", message: "Starting execution..." }));
+        if (shouldLogging(status.events, "ALTAR_CONTINUE_TO_RECORD"))
+          setLogs(logs.concat({ event: "ALTAR_CONTINUE_TO_RECORD", message: "Collecting results..." }));
+        return setTimeout(fetch, 5000);
+      }
+
       const execution = await fetchExecution(buildId);
-      if (execution.status === "") return setTimeout(fetch, 1000);
       setIsBuilding(false);
       history.push(`/permalink/${execution.id}`);
     };
 
+    setLogs([{ event: "ALTAR_START", message: "Start building..." }]);
     setTimeout(fetch, 5000);
   };
 
@@ -140,7 +166,7 @@ const Root: React.FC = () => {
         <FlexboxContainer direction="reverse-horizontal" wrap="wrap">
           <Item basis={basis.editor}>
             <Section title="Code">
-              <CodeEditor value={DataValidatorTemplate.CODE} onEditorMounted={onEditorMounted} />
+              <CodeEditor value={DataValidatorTemplate.CODE} onEditorMounted={onEditorMounted} readOnly={isBuilding} />
             </Section>
           </Item>
           <Item basis={basis.deps}>
@@ -157,7 +183,7 @@ const Root: React.FC = () => {
           </Item>
         </FlexboxContainer>
         <Section title="Output">
-          <OutputConsole>No Output</OutputConsole>
+          <OutputConsole>{logs.length > 0 ? logs.map(w => w.message).join("\n") : "No Outputs"}</OutputConsole>
         </Section>
         {error !== "" ? (
           <Alert color="error" title="Error">
