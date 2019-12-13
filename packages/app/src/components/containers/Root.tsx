@@ -1,4 +1,5 @@
-import React, { useRef, useState, ChangeEvent } from "react";
+import React, { useRef, useState, ChangeEvent, FormEvent } from "react";
+import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
@@ -14,8 +15,8 @@ import Editor from "../atoms/Editor";
 import { FlexboxContainer, FlexItem } from "../atoms/Flexbox";
 import Input from "../atoms/Input";
 import Section from "../molecules/Section";
-import Wrapper from "../organisms/Wrapper";
 import DependencyList from "../organisms/DependencyList";
+import Wrapper from "../organisms/Wrapper";
 
 type Dependencies = { name: string; version: string | null }[];
 type ValueGetter = () => string;
@@ -30,17 +31,38 @@ const CodeEditor = styled(Editor)`
   height: 500px;
 `;
 
+const FixedHeightDependencyList = styled(DependencyList)`
+  max-height: 454px;
+  overflow-y: auto;
+`;
+
+const ModuleInput = styled(Input)`
+  width: 100%;
+  max-width: calc(100% - 22px);
+  padding: 8px 4px;
+  margin: 4px 5px;
+  font-size: 16px;
+`;
+
 const OutputConsole = styled(Console)`
   width: 100%;
   height: auto;
   min-height: 24px;
 `;
 
+const TitleInput = styled(Input)`
+  width: 100%;
+  max-width: calc(100% - 20px);
+  padding: 12px 8px;
+  font-size: 24px;
+`;
+
 const Root: React.FC = () => {
   // states
   const getter = useRef<ValueGetter>();
   const [title, setTitle] = useState<string>("notitle");
-  const [deps, setDeps] = useState<Dependencies>(DataValidatorTemplate.DEPENDENCIES);
+  const [dependencies, setDependencies] = useState<Dependencies>(DataValidatorTemplate.DEPENDENCIES);
+  const [value, setValue] = useState("");
   const [error, setError] = useState<string>("");
   const [isBuilding, setIsBuilding] = useState<boolean>(false);
   const { width } = useWindowSize();
@@ -48,6 +70,23 @@ const Root: React.FC = () => {
   // utilities
   const { startExecution, fetchExecution } = useAltarBuild();
   const history = useHistory();
+  const { t } = useTranslation();
+
+  const onSubmitInput = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const input = value.trim();
+    if (input === "") return;
+
+    const [name, version] = value.split("@");
+    setValue("");
+
+    setDependencies([...dependencies, { name, version }]);
+  };
+
+  const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+  };
 
   const onEditorMounted = (valueGetter: ValueGetter) => {
     getter.current = valueGetter;
@@ -55,6 +94,12 @@ const Root: React.FC = () => {
 
   const onTitleChanged = (event: ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
+  };
+
+  const onDependencyRemoved = (str: string) => {
+    const [name, version] = str.split("@");
+
+    setDependencies(dependencies.filter(w => w.name !== name && w.version !== version));
   };
 
   const onClickBuild = async () => {
@@ -68,7 +113,7 @@ const Root: React.FC = () => {
 
     setIsBuilding(true);
 
-    const params = { dependencies: [], executor: "5.30.1", files: [{ name: "main.pl", content }], title };
+    const params = { dependencies, executor: "5.30.1", files: [{ name: "main.pl", content }], title };
     const { buildId } = await startExecution(params);
     if (buildId === null) {
       setIsBuilding(false);
@@ -91,7 +136,7 @@ const Root: React.FC = () => {
   return (
     <Wrapper>
       <Container>
-        <Input value={title} onChange={onTitleChanged} placeholder="notitle" />
+        <TitleInput value={title} onChange={onTitleChanged} placeholder="notitle" />
         <FlexboxContainer direction="reverse-horizontal" wrap="wrap">
           <Item basis={basis.editor}>
             <Section title="Code">
@@ -100,7 +145,14 @@ const Root: React.FC = () => {
           </Item>
           <Item basis={basis.deps}>
             <Section title="Dependencies">
-              <DependencyList dependencies={deps} />
+              <FixedHeightDependencyList dependencies={dependencies} editable onDelete={onDependencyRemoved} />
+              <form onSubmit={onSubmitInput}>
+                <ModuleInput
+                  value={value}
+                  onChange={onChangeInput}
+                  placeholder={t("organisms.dependency_list.placeholder")}
+                />
+              </form>
             </Section>
           </Item>
         </FlexboxContainer>

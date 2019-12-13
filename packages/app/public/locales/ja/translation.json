@@ -1,4 +1,9 @@
 {
+  "organisms": {
+    "dependency_list": {
+      "placeholder": "Data::Validator@1.07"
+    }
+  },
   "about": {
     "section1": {
       "title": "Altar について",

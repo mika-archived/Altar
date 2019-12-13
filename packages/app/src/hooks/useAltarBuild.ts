@@ -5,7 +5,7 @@ type BuildOptions = {
   executor: string; // default 5.30.1
   title: string;
   files: { name: string; content: string }[];
-  dependencies: { name: string; version: string }[];
+  dependencies: { name: string; version: string | null }[];
 };
 
 type State = {

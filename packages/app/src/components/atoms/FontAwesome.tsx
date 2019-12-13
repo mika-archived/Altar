@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 
 type Types = "solid" | "regular" | "light" | "duotone" | "brand";
 
@@ -7,6 +8,10 @@ type Props = {
   icon: string;
   type: Types;
 };
+
+const Icon = styled.i`
+  line-height: 1.5;
+`;
 
 const getPrefix = (type: Types): string => {
   switch (type) {
@@ -31,7 +36,7 @@ const FontAwesome: React.FC<Props> = ({ fixed, icon, type }) => {
   const classes = [getPrefix(type), `fa-${icon}`];
   if (fixed) classes.push("fa-fw");
 
-  return <i className={classes.join(" ")}></i>;
+  return <Icon className={classes.join(" ")} />;
 };
 
 export default FontAwesome;

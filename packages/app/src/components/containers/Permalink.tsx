@@ -8,10 +8,11 @@ import useWindowSize from "../../hooks/useWindowSize";
 import Console from "../atoms/Console";
 import Container from "../atoms/Container";
 import Editor from "../atoms/Editor";
-import Input from "../atoms/Input";
-import Wrapper from "../organisms/Wrapper";
+import { Heading1 } from "../atoms/Label";
 import { FlexboxContainer, FlexItem } from "../atoms/Flexbox";
 import Section from "../molecules/Section";
+import DependencyList from "../organisms/DependencyList";
+import Wrapper from "../organisms/Wrapper";
 import Loading from "./Loading";
 
 type Task = {
@@ -32,6 +33,11 @@ const CodeEditor = styled(Editor)`
   width: 100%;
   max-width: calc(100% - 1px); /* monaco-editor expands 1px, why??? */
   height: 500px;
+`;
+
+const FixedHeightDependencyList = styled(DependencyList)`
+  max-height: 500px;
+  overflow-y: auto;
 `;
 
 const Line = styled.span`
@@ -77,7 +83,7 @@ const Permalink: React.FC = () => {
           <Loading />
         ) : (
           <>
-            <Input value={task!.title} readOnly />
+            <Heading1>{task!.title}</Heading1>
             <FlexboxContainer direction="reverse-horizontal" wrap="wrap">
               <Item basis={basis.editor}>
                 <Section title="Code">
@@ -85,7 +91,9 @@ const Permalink: React.FC = () => {
                 </Section>
               </Item>
               <Item basis={basis.deps}>
-                <Section title="Dependencies"></Section>
+                <Section title="Dependencies">
+                  <FixedHeightDependencyList dependencies={task!.dependencies} />
+                </Section>
               </Item>
             </FlexboxContainer>
             <Section title="Output">

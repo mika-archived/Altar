@@ -67,6 +67,7 @@ const FlexItem = styled.div<ItemProps>`
   flex-basis: ${props => (props.basis ? props.basis : "auto")};
   flex-grow: ${props => (props.grow ? 1 : 0)};
   flex-shrink: ${props => (props.shrink ? 1 : 0)};
+  overflow: hidden;
 `;
 
 export { FlexboxContainer, FlexItem };

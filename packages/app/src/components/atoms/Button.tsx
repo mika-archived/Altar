@@ -22,4 +22,11 @@ const PrimaryButton = styled(Button)`
   }
 `;
 
-export { Button, PrimaryButton };
+const LinkButton = styled(Button)`
+  padding: 0;
+  font-size: 16px;
+  color: inherit;
+  background-color: transparent;
+`;
+
+export { Button, PrimaryButton, LinkButton };
