@@ -11,11 +11,13 @@ import { PrimaryButton } from "../atoms/Button";
 import Console from "../atoms/Console";
 import Container from "../atoms/Container";
 import Editor from "../atoms/Editor";
-import Input from "../atoms/Input";
-import Wrapper from "../organisms/Wrapper";
 import { FlexboxContainer, FlexItem } from "../atoms/Flexbox";
+import Input from "../atoms/Input";
 import Section from "../molecules/Section";
+import Wrapper from "../organisms/Wrapper";
+import DependencyList from "../organisms/DependencyList";
 
+type Dependencies = { name: string; version: string | null }[];
 type ValueGetter = () => string;
 
 const Item = styled(FlexItem)`
@@ -38,6 +40,7 @@ const Root: React.FC = () => {
   // states
   const getter = useRef<ValueGetter>();
   const [title, setTitle] = useState<string>("notitle");
+  const [deps, setDeps] = useState<Dependencies>(DataValidatorTemplate.DEPENDENCIES);
   const [error, setError] = useState<string>("");
   const [isBuilding, setIsBuilding] = useState<boolean>(false);
   const { width } = useWindowSize();
@@ -96,11 +99,13 @@ const Root: React.FC = () => {
             </Section>
           </Item>
           <Item basis={basis.deps}>
-            <Section title="Dependencies"></Section>
+            <Section title="Dependencies">
+              <DependencyList dependencies={deps} />
+            </Section>
           </Item>
         </FlexboxContainer>
         <Section title="Output">
-          <OutputConsole />
+          <OutputConsole>No Output</OutputConsole>
         </Section>
         {error !== "" ? (
           <Alert color="error" title="Error">
