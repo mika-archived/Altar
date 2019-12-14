@@ -30,10 +30,6 @@ const handler = async (event, context) => {
     for (let i = 0; i < Item["fileTitles"].SS.length; i++)
       files.push({ name: Item["fileTitles"].SS[i], content: Item["fileContents"].SS[i] });
 
-    const dependencies = [];
-    for (let i = 0; i < Item["dependencyNames"].SS.length; i++)
-      dependencies.push({ name: Item["dependencyNames"].SS[i], version: Item["dependencyVersions"].SS[i] });
-
     return context.done(null, {
       statusCode: 200,
       headers: {
@@ -41,7 +37,7 @@ const handler = async (event, context) => {
       },
       body: JSON.stringify({
         id,
-        dependencies,
+        dependencies: Item["dependencies"].SS,
         executor: Item["executor"].S,
         files,
         out: Item["out"].S,
