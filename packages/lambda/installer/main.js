@@ -12,6 +12,7 @@ const EXECUTORS = ["5.30.1"];
 /**
  * @typedef {Object} Payload
  * @property {string} id
+ * @property {string[]} dependencies
  * @property {string} executor
  * @property {File[]} files
  * @property {string} title
@@ -147,6 +148,14 @@ const validate = json => {
 
   // files is null, empty
   if (!json.files || json.files.length === 0) return false;
+
+  // files has duplicated name(s)
+  const filenames = json.files.map(w => w.name);
+  if (filenames.filter((w, i) => filenames.indexOf(w) !== i).length > 0) return false;
+
+  // dependencies has duplicated name(s)
+  const dependencies = json.dependencies || [];
+  if (dependencies.filter((w, i) => dependencies.indexOf(w) !== i).length > 0) return false;
 
   // or too larger (max 100KB)
   if (bytes(json.files.map(w => w.content).join("")) / 1024 >= 100) return false;
