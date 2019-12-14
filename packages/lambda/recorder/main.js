@@ -2,12 +2,6 @@
 const aws = require("aws-sdk");
 
 /**
- * @typedef {Object} Dependency
- * @property {string} name
- * @property {string} version
- */
-
-/**
  * @typedef {Object} File
  * @property {string} name
  * @property {string} content
@@ -16,15 +10,15 @@ const aws = require("aws-sdk");
 /**
  * @typedef {Object} Payload
  * @property {string} id
- * @property {Dependency[]} dependencies
+ * @property {string[]} dependencies
  * @property {string} executor
  * @property {File[]} files
  * @property {string} taskArn
  * @property {string} title
  */
 
-/** @type {Dependency[]} */
-const NO_DEPENDENCIES = [{ name: "(none)", version: null }];
+/** @type {string[]} */
+const NO_DEPENDENCIES = ["No dependencies"];
 
 /**
  * @param {string} str
@@ -104,8 +98,7 @@ const insertBuild = async (json, logs) => {
     Item: {
       id: { S: json.id },
       executor: { S: json.executor },
-      dependencyNames: { SS: dependencies.map(w => w.name) },
-      dependencyVersions: { SS: dependencies.map(w => w.version || "(unspecified)") },
+      dependencies: { SS: dependencies },
       fileContents: { SS: json.files.map(w => w.content) },
       fileTitles: { SS: json.files.map(w => w.name) },
       title: { S: json.title || "notitle" },

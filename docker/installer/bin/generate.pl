@@ -34,10 +34,8 @@ sub create_cpanfile {
   my $str = '';
 
   for my $dependency (@{$dependencies}) {
-    my $name = $dependency->{name};
-    if ($dependency->{version}) {
-      my $version = $dependency->{version};
-
+    my ($name, $version) = split(/@/, $dependency);
+    if (defined $version) {
       $str .= "requires '$name', '$version';\n"
     } else {
       $str .= "requires '$name';\n"

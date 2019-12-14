@@ -1,12 +1,11 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import { useTranslation } from "react-i18next";
+import React from "react";
 import styled from "styled-components";
 
 import Dependency from "../molecules/Dependency";
 
 type Props = {
   className?: string;
-  dependencies: { name: string; version: string | null }[];
+  dependencies: string[];
   editable?: boolean;
   onDelete?: (str: string) => void;
   onSubmit?: (str: string) => void;
@@ -25,7 +24,7 @@ const DependencyList: React.FC<Props> = ({ className, dependencies, editable, on
     <Container className={className}>
       {dependencies.length === 0 && !editable ? <p>No Dependencies</p> : <></>}
       {dependencies.map(dep => {
-        return <Dependency dependency={dep} editable={editable} onClickDelete={onClickDelete} key={dep.name} />;
+        return <Dependency dependency={dep} editable={editable} onClickDelete={onClickDelete} key={dep} />;
       })}
     </Container>
   );

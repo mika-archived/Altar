@@ -8,10 +8,8 @@ import { FlexboxContainer, FlexItem } from "../atoms/Flexbox";
 import FontAwesome from "../atoms/FontAwesome";
 import Hyperlink from "../atoms/Hyperlink";
 
-type Dependency = { name: string; version: string | null };
-
 type Props = {
-  dependency: Dependency;
+  dependency: string;
   editable?: boolean;
   onClickDelete?: (str: string) => void;
 };
@@ -51,20 +49,21 @@ const Dependency: React.FC<Props> = ({ dependency, editable, onClickDelete }) =>
   const onMouseEnter = () => setHover(true);
   const onMouseLeave = () => setHover(false);
   const OnClickButton = () => {
-    if (onClickDelete) onClickDelete(`${dependency.name}@${dependency.version}`);
+    if (onClickDelete) onClickDelete(dependency);
   };
+  const [name, version] = dependency.split("@");
 
   return (
     <Container onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       <FlexItem basis={"200px"} shrink>
         <Name>
-          <Link href={`https://metacpan.org/pod/${dependency.name}`} target="_blank" rel="noreferrer noopener">
-            {dependency.name}
+          <Link href={`https://metacpan.org/pod/${name}`} target="_blank" rel="noreferrer noopener">
+            {name}
           </Link>
         </Name>
       </FlexItem>
       <FlexItem>
-        <Version>{dependency.version || "(null)"}</Version>
+        <Version>{version || "(null)"}</Version>
         <Transition in={editable && hover} timeout={100}>
           {state => (
             <FadeAnimation state={state}>

@@ -61,7 +61,7 @@ const Root: React.FC = () => {
   // states
   const getter = useRef<ValueGetter>();
   const [title, setTitle] = useState<string>("notitle");
-  const [dependencies, setDependencies] = useState<Dependencies>(DataValidatorTemplate.DEPENDENCIES);
+  const [dependencies, setDependencies] = useState<string[]>(DataValidatorTemplate.DEPENDENCIES);
   const [value, setValue] = useState("");
   const [error, setError] = useState<string>("");
   const [logs, setLogs] = useState<{ event: string; message: string }[]>([]);
@@ -79,10 +79,8 @@ const Root: React.FC = () => {
     const input = value.trim();
     if (input === "") return;
 
-    const [name, version] = value.split("@");
     setValue("");
-
-    setDependencies([...dependencies, { name, version }]);
+    setDependencies([...dependencies, input]);
   };
 
   const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
@@ -98,9 +96,7 @@ const Root: React.FC = () => {
   };
 
   const onDependencyRemoved = (str: string) => {
-    const [name, version] = str.split("@");
-
-    setDependencies(dependencies.filter(w => w.name !== name && w.version !== version));
+    setDependencies(dependencies.filter(w => w !== str));
   };
 
   const onClickBuild = async () => {

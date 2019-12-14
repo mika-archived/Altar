@@ -9,12 +9,6 @@ The Altar Perl Installer performs the following tasks:
 `ALTAR_PROJECT` environment variable is JSON format and satisfies the following format.
 
 ```typescript
-type Dependency = {
-  name: string;
-  // If version specified `null`, package manager will install latest version
-  version: string | null;
-};
-
 type File = {
   name: string;
   content: string;
@@ -29,8 +23,8 @@ type AltarProject = {
   title: string;
   // Project Files
   files: File[];
-  // Project Dependencies
-  dependencies: Dependency[];
+  // Project Dependencies, Name or Name@Version
+  dependencies: string[];
 };
 ```
 
@@ -48,10 +42,7 @@ example request JSON is...
     }
   ],
   "dependencies": [
-    {
-      "name": "Data::Validator",
-      "version": null
-    }
+    "Data::Validator"
   ]
 }
 ```

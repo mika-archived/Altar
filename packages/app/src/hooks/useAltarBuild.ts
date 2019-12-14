@@ -1,11 +1,10 @@
-import { useState } from "react";
 import useFetch from "use-http";
 
 type BuildOptions = {
   executor: string; // default 5.30.1
   title: string;
   files: { name: string; content: string }[];
-  dependencies: { name: string; version: string | null }[];
+  dependencies: string[];
 };
 
 type State = {

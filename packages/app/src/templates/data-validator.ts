@@ -23,6 +23,6 @@ package main;
 
 Example::PerlSnippet->say_hello(str => "Altar");`.trim();
 
-const DEPENDENCIES = [{ name: "Data::Validator", version: null }];
+const DEPENDENCIES = ["Data::Validator"];
 
 export default { CODE, DEPENDENCIES };
