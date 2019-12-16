@@ -97,7 +97,7 @@ const runPerlInstaller = async (ecs, json) => {
       containerOverrides: [
         {
           name: "perl-installer",
-          command: ["/usr/local/altar/installer/bin/startup.sh"],
+          command: ["timeout", "270", "/usr/local/altar/installer/bin/startup.sh"],
           cpu: 256,
           environment: [
             { name: "ALTAR_PROJECT", value: JSON.stringify(json) },
