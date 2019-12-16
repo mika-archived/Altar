@@ -98,6 +98,7 @@ const runPerlInstaller = async (ecs, json) => {
         {
           name: "perl-installer",
           command: ["/usr/local/altar/installer/bin/startup.sh"],
+          cpu: 256,
           environment: [
             { name: "ALTAR_PROJECT", value: JSON.stringify(json) },
             { name: "PERL_CARMEL_REPO", value: "/usr/local/PROJECT/caches" }
