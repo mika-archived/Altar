@@ -7,7 +7,7 @@
   "about": {
     "section1": {
       "title": "Altar について",
-      "description": "Altar は、 CPAN モジュールが利用可能な Perl 5 オンラインコンパイラーです。",
+      "description": "Altar は、 CPAN モジュールが利用可能な Perl 5 オンラインランナーです。",
       "on_this_site": {
         "title": "以下のことが出来ます :",
         "1": "Visual Studio Code (Monaco Editor) を使って Perl 5 コードを書く",

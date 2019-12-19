@@ -2,7 +2,7 @@
   "about": {
     "section1": {
       "title": "About Altar",
-      "description": "Altar is a Perl 5 online compiler with the CPAN modules available.",
+      "description": "Altar is a Perl 5 online runner with the CPAN modules available.",
       "on_this_site": {
         "title": "On this site you can:",
         "1": "write Perl 5 code using Visual Studio Code (Monaco Editor)",

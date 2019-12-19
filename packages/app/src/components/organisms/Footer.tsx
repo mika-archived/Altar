@@ -30,7 +30,7 @@ const Footer: React.FC<Props> = () => {
         <FlexboxContainer>
           <FlexItem grow>
             <Heading1>Altar</Heading1>
-            <p>Online Perl Compiler</p>
+            <p>Online Perl Runner</p>
             <SmallCopyright />
           </FlexItem>
           <FlexItem grow>
